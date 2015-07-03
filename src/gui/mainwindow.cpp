@@ -1533,6 +1533,7 @@ void MainWindow::showWindow()
 #ifdef COPYQ_WS_X11
     /* Re-initialize window in window manager so it can popup on current workspace. */
     hide();
+    waitFor(50);
 #endif
 
     cm->restoreWindowGeometry(this);
