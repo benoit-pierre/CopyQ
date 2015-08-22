@@ -444,6 +444,8 @@ private slots:
 
     void updateContextMenuTimeout();
 
+    void updateItemPreview();
+
     void onAboutToQuit();
 
     void onCommandDialogSaved();
@@ -531,7 +533,7 @@ private:
 
     void updateTabIcon(const QString &newName, const QString &oldName);
 
-    QAction *addItemAction(Actions::Id id, QObject *receiver, const char *slot);
+    QAction *addItemAction(Actions::Id id, QObject *receiver, const char *slot = NULL);
 
     void addCommandsToMenu(QMenu *menu, const QVariantMap &data);
 
