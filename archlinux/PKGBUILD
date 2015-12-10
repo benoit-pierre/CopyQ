@@ -1,0 +1,44 @@
+# Maintainer: Karol "Kenji Takahashi" Woźniak <kenji.sx>
+
+pkgbase=copyq
+pkgname=('copyq' 'copyq-plugin-itemweb')
+_realname=CopyQ
+pkgver=2.9.0
+pkgrel=1
+url="https://github.com/hluk/CopyQ"
+makedepends=('cmake' 'libxtst' 'qt5-tools' 'qt5-script' 'qt5-svg' 'qt5-webkit')
+license=('GPL3')
+arch=('i686' 'x86_64')
+source=("https://github.com/hluk/${_realname}/archive/v${pkgver}.tar.gz")
+md5sums=('59eda6cb45e6942d6c7134f37cb659ab')
+
+build() {
+    mkdir "${srcdir}/build"
+    cd "${srcdir}/build"
+    cmake \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DWITH_QT5=TRUE \
+        "${srcdir}/${_realname}-${pkgver}"
+    make
+}
+
+package_copyq() {
+    pkgdesc="Clipboard manager with searchable and editable history."
+    depends=('libxtst' 'qt5-script' 'hicolor-icon-theme' 'desktop-file-utils')
+    optdepends=('copyq-plugin-itemweb')
+    conflicts=('copyq-git')
+    install=copyq.install
+    cd "${srcdir}/build"
+    make DESTDIR="${pkgdir}" install
+    rm  "${pkgdir}/usr/lib/copyq/plugins/libitemweb.so"
+}
+
+package_copyq-plugin-itemweb() {
+    pkgdesc="Clipboard manager with searchable and editable history. Itemweb plugin."
+    depends=('copyq' 'qt5-webkit')
+    conflicts=('copyq-plugin-itemweb-git')
+    cd "${srcdir}/build"
+    install -Dm755 plugins/libitemweb.so "${pkgdir}/usr/lib/copyq/plugins/libitemweb.so"
+}
+
+# vim:set ts=4 sw=4 et:
